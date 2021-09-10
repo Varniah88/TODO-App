@@ -3,20 +3,22 @@ import { Accordion, Badge, Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import MainScreen from "../../Components/MainScreen";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { listTodos } from "../../actions/todoActions";
 
 const Todo = () => {
-  const [todos, setTodos] = useState([]);
+  const dispatch = useDispatch();
+
+  const todoList = useSelector((state) => state.todoList);
+  const { loading, todos, error } = todoList;
 
   const deleteHandler = (id) => {
     if (window.confirm("Do You Want to Delete this Item?")) {
     }
   };
-  const fetchTodo = async () => {
-    const { data } = await axios.get("/api/todos");
-    setTodos(data);
-  };
+
   useEffect(() => {
-    fetchTodo();
+    dispatch(listTodos());
   }, []);
 
   return (
@@ -27,7 +29,7 @@ const Todo = () => {
         </Button>
       </Link>
 
-      {todos.map((todo) => (
+      {todos?.map((todo) => (
         <Accordion key={todo._id}>
           <Card style={{ margin: 10 }}>
             <Card.Header style={{ display: "flex" }}>
