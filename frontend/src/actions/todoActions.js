@@ -44,12 +44,21 @@ export const createTodoAction =
       dispatch({
         type: TODO_CREATE_REQUEST,
       });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-      const { data } = await axios.post(`/api/todos/create`, {
-        title,
-        content,
-        category,
-      });
+      const { data } = await axios.post(
+        `/api/todos/create`,
+        {
+          title,
+          content,
+          category,
+        },
+        config
+      );
 
       dispatch({
         type: TODO_CREATE_SUCCESS,
